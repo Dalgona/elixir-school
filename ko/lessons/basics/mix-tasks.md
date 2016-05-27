@@ -1,18 +1,18 @@
 ---
 layout: page
-title: Custom Mix Tasks 
+title: 커스텀 Mix 태스크
 category: basics
 order: 15
-lang: en
+lang: ko
 ---
 
-Creating custom Mix tasks for your Elixir projects.
+여러분의 Elixir 프로젝트를 위한 커스텀 Mix 태스크 만들기.
 
 {% include toc.html %}
 
-## Introduction 
+## 소개
 
-It's not uncommon to want to extend your Elixir applications functionality by adding custom Mix tasks. Before we learn about how to create specific Mix tasks for our projects, let's look at one that already exists:
+애플리케이션에 커스텀 Mix 태스크를 추가하여 기능을 확장하고자 하는 것은 흔한 일입니다. 프로젝트에 어떻게 Mix 태스크를 추가하는지 배우기 전에, 기존의 태스크를 한 번 확인해 봅시다.
 
 ```shell
 $ mix phoenix.new my_phoenix_app
@@ -28,11 +28,11 @@ $ mix phoenix.new my_phoenix_app
 ...
 ```
 
-As we can see from the shell command above, The Phoenix Framework has a custom Mix task to generate a new project. What if we could create something similar for our project? Well the great news is we can, and Elixir makes this very easy for us to do.
+위의 셸 명령에서 보다시피, Phoenix 프레임워크에는 새로운 프로젝트를 생성하는 커스텀 Mix 태스크가 있습니다. 만약에 우리 프로젝트에 비슷한 것을 추가하고 싶다면 어떻게 할까요? 좋은 소식이 있다면, 우리도 그렇게 할 수 있다는 것이고, Elixir를 이용하면 정말 쉽게 할 수 있다는 것입니다.
 
-## Setup
+## 준비하기
 
-Let's set up a very basic Mix application.
+매우 간단한 Mix 애플리케이션을 하나 만듭시다.
 
 ```shell
 $ mix new hello
@@ -57,7 +57,7 @@ mix test
 Run "mix help" for more commands.
 ```
 
-Now, in our **lib/hello.ex** file that Mix generated for us, let's create a simple function that will output "Hello, World!"
+이제, Mix가 생성해 준 **lib/hello.ex** 파일에서 "Hello, World!"를 출력하는 간단한 함수를 만들어 봅시다.
 
 ```elixir
 defmodule Hello do
@@ -71,9 +71,9 @@ defmodule Hello do
 end
 ```
 
-## Custom Mix Task
+## 커스텀 Mix 태스크
 
-Let's create our custom Mix task. Create a new directory and file **hello/lib/mix/tasks/hello.ex**. Within this file, let's insert these 7 lines of Elixir.
+이제 우리의 커스텀 Mix 태스크를 만들어 봅시다. **hello/lib/mix/tasks/hello.ex**라는 디렉토리와 파일을 만들고, 그 안에 7 줄의 Elixir 코드를 작성하세요.
 
 ```elixir
 defmodule Mix.Tasks.Hello do
@@ -81,30 +81,30 @@ defmodule Mix.Tasks.Hello do
 
   @shortdoc "Simply runs the Hello.say/0 command."
   def run(_) do
-    Hello.say # calling our Hello.say() function from earlier
+    Hello.say # 앞서 만든 Hello.say() 함수 호출하기
   end
 end
 ```
 
-Notice how we start the defmodule statement with `Mix.Tasks` and the name we want to call from the command line. One the second line we introduce the `use Mix.Task` which brings the `Mix.Task` behaviour into the namespace. We then declare a run function which ignores any arguements for now. Within this function, we call our `Hello` module and the `say` function.
+defmodule 구문을 `Mix.Tasks`와 명령줄에서 호출하고자 하는 이름으로 시작한다는 것에 주목하십시오. 두번째 줄에서는 `use Mix.Task`를 사용하여 이 네임스페이스에 `Mix.Task`의 동작을 가져옵니다. 그 다음에 run 함수를 선언하는데, 여기에서는 모든 매개변수를 무시합니다. 이 함수 안에서 `Hello` 모듈과 `say` 함수를 호출합니다.
 
-## Mix Tasks in Action
+## Mix 태스크 사용하기
 
-Let's checkout our mix task. As long as we are in the directory it should work. From the command line, run `mix hello`, and we should see the following:
+우리가 만든 Mix 태스크를 확인해 봅시다. 여러분이 프로젝트 디렉토리 내에 있으면 잘 작동할 것입니다. 명령줄에서 `mix hello`를 실행하면 다음과 같은 내용이 출력됩니다.
 
 ```shell
 $ mix hello
 Hello, World!
 ```
 
-Mix is quite friendly by default. It knows that everyone can make a spelling error now and then, so it uses a technique called fuzzy string matching to make recommendations:
+Mix는 기본적으로 꽤 친절합니다. Mix는 모든 사람들이 가끔씩 철자를 틀리기도 한다는 것을 알고 있기 때문에 퍼지 문자열 매칭이라는 기술을 사용하여 명령어를 추천합니다.
 
 ```shell
 $ mix hell
 ** (Mix) The task "hell" could not be found. Did you mean "hello"?
 ```
 
-Did you also notice that we introduced an new module attribute, `@shortdoc`? This comes in handy when shipping our application, such as when a user runs the `mix help` command from the terminal.
+또한, 앞의 코드에서 `@shortdoc`이라는 새로운 모듈 속성을 사용했다는 것을 알아채셨습니까? 이 속성은 여러분이 애플리케이션을 배포할 때 유용할 것입니다. 예를 들면 사용자가 터미널에서 `mix help` 명령을 실행할 때 말이지요.
 
 ```shell
 $ mix help
